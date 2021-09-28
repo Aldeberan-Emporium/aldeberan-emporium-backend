@@ -180,7 +180,15 @@
             mysqli_query($conn, $query);
             break;
         case "readOrderAll":
-            $query = "SELECT * FROM orders ORDER BY order_id ASC";
+            $query = "SELECT DISTINCT oi.*, oa.*, op.* FROM orders o 
+                        INNER JOIN order_item oi
+                        ON oi.order_id = o.order_id 
+                        INNER JOIN order_address oa
+                        ON oa.order_id = o.order_id 
+                        INNER JOIN order_payment op
+                        ON op.order_id = o.order_id                     
+                        ORDER BY o.order_id ASC
+                        GROUP BY o.order_id";
             $result = mysqli_query($conn, $query);
             if (mysqli_num_rows($result) > 0) {
                 while($row = mysqli_fetch_assoc($result)){
