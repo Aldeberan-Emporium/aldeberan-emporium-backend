@@ -91,7 +91,10 @@
             break;
         case "readQuoteByUser":
             $userID = $_POST['user_id'];
-            $query = "SELECT * FROM quote WHERE user_id = '$userID' AND quote_status = 0";
+            $query = "SELECT q.*, qi.* FROM quote q
+                        INNER JOIN quote_item qi
+                        ON qi.quote_id = q.quote_id
+                        WHERE user_id = '$userID' AND quote_status = 0";
             $result = mysqli_query($conn, $query);
             if (mysqli_num_rows($result) > 0) {
                 while($row = mysqli_fetch_assoc($result)){
