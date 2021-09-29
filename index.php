@@ -182,6 +182,16 @@
             $query = "INSERT INTO orders (user_id, order_reference, order_date, order_subtotal, order_total, order_status) VALUES ('$userID', '$orderRef', '$orderDate', '$subtotal', '$total', '$orderStatus')";
             mysqli_query($conn, $query);
             break;
+        case "readOrderRefAll":
+            $query = "SELECT order_reference FROM orders";
+            $result = mysqli_query($conn, $query);
+            if (mysqli_num_rows($result) > 0) {
+                while($row = mysqli_fetch_assoc($result)){
+                    $data[] = $row;
+                }
+                echo json_encode($data);
+            }
+            break;
         case "readOrderAll":
             $query = "SELECT DISTINCT oi.*, oa.*, op.* FROM orders o 
                         INNER JOIN order_item oi
