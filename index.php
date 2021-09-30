@@ -13,32 +13,32 @@
     $conn->set_charset("utf8");
 
     //The action act as POST for the URL
-    $action = $_POST['action'];
+    $action = $_GET['action'];
 
     switch($action){
         case "addProduct":
-            $prodName = json_decode($_POST['product_name']);
-            $prodSKU = json_decode($_POST['product_SKU']);
-            $prodAvail = json_decode($_POST['product_availability']);
-            $prodStock = json_decode($_POST['product_stock']);
-            $prodPrice = json_decode($_POST['product_price']);
-            $prodImg = json_decode($_POST['product_img']);
+            $prodName = json_decode($_GET['product_name']);
+            $prodSKU = json_decode($_GET['product_SKU']);
+            $prodAvail = json_decode($_GET['product_availability']);
+            $prodStock = json_decode($_GET['product_stock']);
+            $prodPrice = json_decode($_GET['product_price']);
+            $prodImg = json_decode($_GET['product_img']);
             $query = "INSERT INTO product (product_name, product_SKU, product_availability, product_stock, product_price, product_img) VALUES ('$prodName', '$prodSKU', '$prodAvail', '$prodStock', '$prodPrice', '$prodImg')";
             mysqli_query($conn, $query);
             break;
         case "updateProduct":
-            $prodID = $_POST['product_id'];
-            $prodName = json_decode($_POST['product_name']);
-            $prodSKU = json_decode($_POST['product_SKU']);
-            $prodAvail = json_decode($_POST['product_availability']);
-            $prodStock = json_decode($_POST['product_stock']);
-            $prodPrice = json_decode($_POST['product_price']);
-            $prodImg = json_decode($_POST['product_img']);
+            $prodID = $_GET['product_id'];
+            $prodName = json_decode($_GET['product_name']);
+            $prodSKU = json_decode($_GET['product_SKU']);
+            $prodAvail = json_decode($_GET['product_availability']);
+            $prodStock = json_decode($_GET['product_stock']);
+            $prodPrice = json_decode($_GET['product_price']);
+            $prodImg = json_decode($_GET['product_img']);
             $query = "UPDATE product SET product_name='$prodName', product_SKU = '$prodSKU', product_availability = '$prodAvail', product_stock = '$prodStock', product_price = '$prodPrice', product_img = '$prodImg' WHERE product_id = '$prodID'";
             mysqli_query($conn, $query);
             break;
         case "deleteProduct":
-            $prodID = $_POST['product_id'];
+            $prodID = $_GET['product_id'];
             $query = "DELETE FROM product WHERE product_id = '$prodID'";
             mysqli_query($conn, $query);
             break;
@@ -53,7 +53,7 @@
             }
             break;
         case "readProductById":
-            $prodID = $_POST['product_id'];
+            $prodID = $_GET['product_id'];
             $query = "SELECT * FROM product WHERE product_id = '$prodID'";
             $result = mysqli_query($conn, $query);
             if (mysqli_num_rows($result) > 0) {
@@ -64,33 +64,33 @@
             }
             break;
         case "addQuote":
-            $userID = json_decode($_POST['user_id']);
-            $subtotal = json_decode($_POST['subtotal']);
-            $total = json_decode($_POST['total']);
-            $createdAt = json_decode($_POST['created_at']);
-            $updatedAt = json_decode($_POST['updated_at']);
-            $quoteStatus = json_decode($_POST['quote_status']);
+            $userID = json_decode($_GET['user_id']);
+            $subtotal = json_decode($_GET['subtotal']);
+            $total = json_decode($_GET['total']);
+            $createdAt = json_decode($_GET['created_at']);
+            $updatedAt = json_decode($_GET['updated_at']);
+            $quoteStatus = json_decode($_GET['quote_status']);
             $query = "INSERT INTO quote (user_id, subtotal, total, created_at, updated_at, quote_status) VALUES ('$userID', '$subtotal', '$total', '$createdAt', '$updatedAt', '$quoteStatus')";
             mysqli_query($conn, $query);
             break;
         case "updateQuote":
-            $quoteID = $_POST['quote_id'];
-            $userID = json_decode($_POST['user_id']);
-            $subtotal = json_decode($_POST['subtotal']);
-            $total = json_decode($_POST['total']);
-            $createdAt = json_decode($_POST['created_at']);
-            $updatedAt = json_decode($_POST['updated_at']);
-            $quoteStatus = json_decode($_POST['quote_status']);
+            $quoteID = $_GET['quote_id'];
+            $userID = json_decode($_GET['user_id']);
+            $subtotal = json_decode($_GET['subtotal']);
+            $total = json_decode($_GET['total']);
+            $createdAt = json_decode($_GET['created_at']);
+            $updatedAt = json_decode($_GET['updated_at']);
+            $quoteStatus = json_decode($_GET['quote_status']);
             $query = "UPDATE quote SET user_id = '$userID', subtotal = '$subtotal', total = '$total', created_at = '$createdAt', updated_at = '$updatedAt', quote_status = '$quoteStatus' WHERE quote_id = '$quoteID'";
             mysqli_query($conn, $query);
             break;
         case "deleteQuote":
-            $quoteID = $_POST['quote_id'];
+            $quoteID = $_GET['quote_id'];
             $query = "DELETE FROM quote WHERE quote_id = '$quoteID'";
             mysqli_query($conn, $query);
             break;
         case "readQuoteByUser":
-            $userID = $_POST['user_id'];
+            $userID = $_GET['user_id'];
             $query = "SELECT q.*, qi.* FROM quote q
                         INNER JOIN quote_item qi
                         ON qi.quote_id = q.quote_id
@@ -104,65 +104,65 @@
             }
             break;
         case "addQuoteItem":
-            $quoteID = $_POST['quote_id'];
-            $prodName = json_decode($_POST['product_name']);
-            $prodSKU = json_decode($_POST['product_SKU']);
-            $prodQuantity = json_decode($_POST['product_quantity']);
-            $prodPrice = json_decode($_POST['product_price']);
-            $prodImg = json_decode($_POST['product_img']);
+            $quoteID = $_GET['quote_id'];
+            $prodName = json_decode($_GET['product_name']);
+            $prodSKU = json_decode($_GET['product_SKU']);
+            $prodQuantity = json_decode($_GET['product_quantity']);
+            $prodPrice = json_decode($_GET['product_price']);
+            $prodImg = json_decode($_GET['product_img']);
             $query = "INSERT INTO quote_item (quote_id, product_name, product_SKU, product_quantity, product_price, product_img) VALUES ('$quoteID', '$prodName', '$prodSKU', '$prodQuantity', '$prodPrice', '$prodImg')";
             mysqli_query($conn, $query);
             break;
         case "updateQuoteItem":
-            $quoteItemID = $_POST['quote_item_id'];            
-            $quoteID = $_POST['quote_id'];
-            $prodName = json_decode($_POST['product_name']);
-            $prodSKU = json_decode($_POST['product_SKU']);
-            $prodQuantity = json_decode($_POST['product_quantity']);
-            $prodPrice = json_decode($_POST['product_price']);
-            $prodImg = json_decode($_POST['product_img']);
+            $quoteItemID = $_GET['quote_item_id'];            
+            $quoteID = $_GET['quote_id'];
+            $prodName = json_decode($_GET['product_name']);
+            $prodSKU = json_decode($_GET['product_SKU']);
+            $prodQuantity = json_decode($_GET['product_quantity']);
+            $prodPrice = json_decode($_GET['product_price']);
+            $prodImg = json_decode($_GET['product_img']);
             $query = "UPDATE quote_item SET quote_id = '$quoteID', product_name='$prodName', product_SKU = '$prodSKU', product_quantity = '$prodQuantity', product_price = '$prodPrice', product_img = '$prodImg' WHERE quote_item_id = '$quoteItemID'";
             mysqli_query($conn, $query);
             break;
         case "deleteQuoteItem":
-            $quoteItemID = $_POST['quote_item_id'];            
+            $quoteItemID = $_GET['quote_item_id'];            
             $query = "DELETE FROM quote_item WHERE quote_item_id = '$quoteItemID'";
             mysqli_query($conn, $query);
             break;
         case "addAddress":
-            $userID = json_decode($_POST['user_id']);
-            $addRecipient = json_decode($_POST['address_recipient']);
-            $addContact = json_decode($_POST['address_contact']);
-            $addLine1 = json_decode($_POST['address_line1']);
-            $addLine2 = json_decode($_POST['address_line2']);
-            $addCode = json_decode($_POST['address_code']);
-            $addCity = json_decode($_POST['address_city']);
-            $addState = json_decode($_POST['address_state']);  
-            $addCountry = json_decode($_POST['address_country']);          
+            $userID = json_decode($_GET['user_id']);
+            $addRecipient = json_decode($_GET['address_recipient']);
+            $addContact = json_decode($_GET['address_contact']);
+            $addLine1 = json_decode($_GET['address_line1']);
+            $addLine2 = json_decode($_GET['address_line2']);
+            $addCode = json_decode($_GET['address_code']);
+            $addCity = json_decode($_GET['address_city']);
+            $addState = json_decode($_GET['address_state']);  
+            $addCountry = json_decode($_GET['address_country']);          
             $query = "INSERT INTO address_user (user_id, address_recipient, address_contact, address_line1, address_line2, address_code, address_city, address_state, address_country) VALUES ('$userID', '$addRecipient', '$addContact', '$addLine1', '$addLine2', '$addCode', '$addCity', '$addState', '$addCountry')";
             mysqli_query($conn, $query);
             break;
         case "updateAddress":
-            $addID = $_POST['address_id'];
-            $userID = json_decode($_POST['user_id']);
-            $addRecipient = json_decode($_POST['address_recipient']);
-            $addContact = json_decode($_POST['address_contact']);
-            $addLine1 = json_decode($_POST['address_line1']);
-            $addLine2 = json_decode($_POST['address_line2']);
-            $addCode = json_decode($_POST['address_code']);
-            $addCity = json_decode($_POST['address_city']);
-            $addState = json_decode($_POST['address_state']);  
-            $addCountry = json_decode($_POST['address_country']);          
+            $addID = $_GET['address_id'];
+            $userID = json_decode($_GET['user_id']);
+            $addRecipient = json_decode($_GET['address_recipient']);
+            $addContact = json_decode($_GET['address_contact']);
+            $addLine1 = json_decode($_GET['address_line1']);
+            $addLine2 = json_decode($_GET['address_line2']);
+            $addCode = json_decode($_GET['address_code']);
+            $addCity = json_decode($_GET['address_city']);
+            $addState = json_decode($_GET['address_state']);  
+            $addCountry = json_decode($_GET['address_country']);          
             $query = "UPDATE address_user SET user_id = '$userID', address_recipient = '$addRecipient', address_contact = '$addContact', address_line1 = '$addLine1', address_line2 = '$addLine2', address_code = '$addCode', address_city = '$addCity', address_state = '$addState', address_country = '$addCountry' WHERE address_id = '$addID'";
             mysqli_query($conn, $query);
             break;
         case "deleteAddress":
-            $addID = $_POST['address_id'];         
+            $addID = $_GET['address_id'];         
             $query = "DELETE FROM address_user WHERE address_id = '$addID'";
             mysqli_query($conn, $query);
             break;
         case "readAddressByUser":
-            $userID = $_POST['user_id'];
+            $userID = $_GET['user_id'];
             $query = "SELECT * FROM address_user WHERE user_id = '$userID'";
             $result = mysqli_query($conn, $query);
             if (mysqli_num_rows($result) > 0) {
@@ -173,12 +173,12 @@
             }
             break;
         case "addOrder":
-            $userID = json_decode($_POST['user_id']);
-            $orderRef = json_decode($_POST['order_reference']);
-            $orderDate = json_decode($_POST['order_date']);
-            $subtotal = json_decode($_POST['order_subtotal']);
-            $total = json_decode($_POST['order_total']);
-            $orderStatus = json_decode($_POST['order_status']);       
+            $userID = json_decode($_GET['user_id']);
+            $orderRef = json_decode($_GET['order_reference']);
+            $orderDate = json_decode($_GET['order_date']);
+            $subtotal = json_decode($_GET['order_subtotal']);
+            $total = json_decode($_GET['order_total']);
+            $orderStatus = json_decode($_GET['order_status']);       
             $query = "INSERT INTO orders (user_id, order_reference, order_date, order_subtotal, order_total, order_status) VALUES ('$userID', '$orderRef', '$orderDate', '$subtotal', '$total', '$orderStatus')";
             mysqli_query($conn, $query);
             break;
@@ -211,7 +211,7 @@
             }
             break;
         case "readOrderByUser":
-            $userID = $_POST['user_id'];
+            $userID = $_GET['user_id'];
             $query = "SELECT DISTINCT oi.*, oa.*, op.* FROM orders o 
                         INNER JOIN order_item oi
                         ON oi.order_id = o.order_id 
@@ -230,32 +230,32 @@
             }
             break;
         case "addOrderItem":
-            $orderID = json_decode($_POST['order_id']);
-            $prodName = json_decode($_POST['product_name']);
-            $prodSKU = json_decode($_POST['product_SKU']);
-            $prodQuantity = json_decode($_POST['product_quantity']);
-            $prodPrice = json_decode($_POST['product_price']);
-            $prodImg = json_decode($_POST['product_img']);     
+            $orderID = json_decode($_GET['order_id']);
+            $prodName = json_decode($_GET['product_name']);
+            $prodSKU = json_decode($_GET['product_SKU']);
+            $prodQuantity = json_decode($_GET['product_quantity']);
+            $prodPrice = json_decode($_GET['product_price']);
+            $prodImg = json_decode($_GET['product_img']);     
             $query = "INSERT INTO order_item (order_id, product_name, product_SKU, product_quantity, product_price, product_img) VALUES ('$orderID', '$prodName', '$prodSKU', '$prodQuantity', '$prodPrice', '$prodImg')";
             mysqli_query($conn, $query);
             break;
         case "addOrderAddress":
-            $orderID = json_decode($_POST['order_id']);
-            $addRecipient = json_decode($_POST['address_recipient']);
-            $addContact = json_decode($_POST['address_contact']);
-            $addLine1 = json_decode($_POST['address_line1']);
-            $addLine2 = json_decode($_POST['address_line2']);
-            $addCode = json_decode($_POST['address_code']);
-            $addCity = json_decode($_POST['address_city']);
-            $addState = json_decode($_POST['address_state']);  
-            $addCountry = json_decode($_POST['address_country']);  
+            $orderID = json_decode($_GET['order_id']);
+            $addRecipient = json_decode($_GET['address_recipient']);
+            $addContact = json_decode($_GET['address_contact']);
+            $addLine1 = json_decode($_GET['address_line1']);
+            $addLine2 = json_decode($_GET['address_line2']);
+            $addCode = json_decode($_GET['address_code']);
+            $addCity = json_decode($_GET['address_city']);
+            $addState = json_decode($_GET['address_state']);  
+            $addCountry = json_decode($_GET['address_country']);  
             $query = "INSERT INTO order_address (order_id, address_recipient, address_contact, address_line1, address_line2, address_code, address_city, address_state, address_country) VALUES ('$orderID', '$addRecipient', '$addContact', '$addLine1', '$addLine2', '$addCode', '$addCity', '$addState', '$addCountry')";
             mysqli_query($conn, $query);
             break;
         case "addOrderPayment":
-            $orderID = json_decode($_POST['order_id']);
-            $payType = json_decode($_POST['payment_type']);
-            $payID = json_decode($_POST['payment_id']);
+            $orderID = json_decode($_GET['order_id']);
+            $payType = json_decode($_GET['payment_type']);
+            $payID = json_decode($_GET['payment_id']);
             $query = "INSERT INTO order_payment (order_id, payment_type, payment_id) VALUES ('$orderID', '$payType', '$payID')";
             mysqli_query($conn, $query);
             break;
