@@ -22,7 +22,7 @@
             $prodAvail = $_GET['product_availability'];
             $prodStock = $_GET['product_stock'];
             $prodPrice = $_GET['product_price'];
-            $prodImg = $_GET['product_img'];
+            $prodImg = urlencode($_GET['product_img']);
             $query = "INSERT INTO product (product_name, product_SKU, product_availability, product_stock, product_price, product_img) VALUES ('$prodName', '$prodSKU', '$prodAvail', '$prodStock', '$prodPrice', '$prodImg')";
             mysqli_query($conn, $query);
             break;
