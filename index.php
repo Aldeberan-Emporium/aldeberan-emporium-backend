@@ -91,10 +91,22 @@
             break;
         case "readQuoteByUser":
             $userID = $_GET['user_id'];
+            $query = "SELECT * FROM quote q WHERE user_id = '$userID' AND quote_status = 0";
+            $result = mysqli_query($conn, $query);
+            if (mysqli_num_rows($result) > 0) {
+                while($row = mysqli_fetch_assoc($result)){
+                    $data[] = $row;
+                }
+                echo json_encode($data);
+            }
+            break;
+        case "readQuoteItemByQuote":
+            $userID = $_GET['user_id'];
             $query = "SELECT q.*, qi.* FROM quote q
                         INNER JOIN quote_item qi
                         ON qi.quote_id = q.quote_id
-                        WHERE user_id = '$userID' AND quote_status = 0";
+                        WHERE quote_id = '$quoteID'
+                        ORDER BY qi.quote_item_id ASC";
             $result = mysqli_query($conn, $query);
             if (mysqli_num_rows($result) > 0) {
                 while($row = mysqli_fetch_assoc($result)){
