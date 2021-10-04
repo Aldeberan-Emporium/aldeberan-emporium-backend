@@ -109,6 +109,19 @@
                 echo json_encode($data);
             }
             break;
+        case "checkIfUserExist":
+            $userID = $_GET['user_id'];
+            $isUserExist = false;
+            $query = "SELECT * FROM quote WHERE user_id = '$userID'";
+            $result = mysqli_query($conn, $query);
+            if (mysqli_num_rows($result) > 0) {
+                $isUserExist = true;
+            }
+            if ($isUserExist){
+                $query = "INSERT INTO quote (user_id, total, quote_status) VALUES ('$userID', '0.00', '0')";
+                mysqli_query($conn, $query);
+            }
+            break;
         case "addQuoteItem":
             $quoteID = $_GET['quote_id'];
             $prodName = $_GET['product_name'];
