@@ -157,8 +157,9 @@
             $addCode = $_GET['address_code'];
             $addCity = $_GET['address_city'];
             $addState = $_GET['address_state'];  
-            $addCountry = $_GET['address_country'];          
-            $query = "INSERT INTO address_user (user_id, address_recipient, address_contact, address_line1, address_line2, address_code, address_city, address_state, address_country) VALUES ('$userID', '$addRecipient', '$addContact', '$addLine1', '$addLine2', '$addCode', '$addCity', '$addState', '$addCountry')";
+            $addCountry = $_GET['address_country'];   
+            $isDefault = $_GET['is_default'];       
+            $query = "INSERT INTO address_user (user_id, address_recipient, address_contact, address_line1, address_line2, address_code, address_city, address_state, address_country, is_default) VALUES ('$userID', '$addRecipient', '$addContact', '$addLine1', '$addLine2', '$addCode', '$addCity', '$addState', '$addCountry', '$isDefault')";
             mysqli_query($conn, $query);
             break;
         case "updateAddress":
@@ -171,8 +172,9 @@
             $addCode = $_GET['address_code'];
             $addCity = $_GET['address_city'];
             $addState = $_GET['address_state'];  
-            $addCountry = $_GET['address_country'];          
-            $query = "UPDATE address_user SET user_id = '$userID', address_recipient = '$addRecipient', address_contact = '$addContact', address_line1 = '$addLine1', address_line2 = '$addLine2', address_code = '$addCode', address_city = '$addCity', address_state = '$addState', address_country = '$addCountry' WHERE address_id = '$addID'";
+            $addCountry = $_GET['address_country'];       
+            $isDefault = $_GET['is_default'];    
+            $query = "UPDATE address_user SET user_id = '$userID', address_recipient = '$addRecipient', address_contact = '$addContact', address_line1 = '$addLine1', address_line2 = '$addLine2', address_code = '$addCode', address_city = '$addCity', address_state = '$addState', address_country = '$addCountry', is_default = '$isDefault' WHERE address_id = '$addID'";
             mysqli_query($conn, $query);
             break;
         case "deleteAddress":
@@ -183,6 +185,17 @@
         case "readAddressByUser":
             $userID = $_GET['user_id'];
             $query = "SELECT * FROM address_user WHERE user_id = '$userID'";
+            $result = mysqli_query($conn, $query);
+            if (mysqli_num_rows($result) > 0) {
+                while($row = mysqli_fetch_assoc($result)){
+                    $data[] = $row;
+                }
+                echo json_encode($data);
+            }
+            break;
+        case "readAddressDefault":
+            $userID = $_GET['user_id'];
+            $query = "SELECT * FROM address_user WHERE user_id = '$userID' AND is_default = 1";
             $result = mysqli_query($conn, $query);
             if (mysqli_num_rows($result) > 0) {
                 while($row = mysqli_fetch_assoc($result)){
