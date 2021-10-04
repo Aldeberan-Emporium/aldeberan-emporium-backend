@@ -117,7 +117,7 @@
             if (mysqli_num_rows($result) > 0) {
                 $isUserExist = true;
             }
-            if ($isUserExist){
+            if (!$isUserExist){
                 $query = "INSERT INTO quote (user_id, total, quote_status) VALUES ('$userID', '0.00', '0')";
                 mysqli_query($conn, $query);
             }
