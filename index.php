@@ -65,23 +65,17 @@
             break;
         case "addQuote":
             $userID = $_GET['user_id'];
-            $subtotal = $_GET['subtotal'];
             $total = $_GET['total'];
-            $createdAt = $_GET['created_at'];
-            $updatedAt = $_GET['updated_at'];
             $quoteStatus = $_GET['quote_status'];
-            $query = "INSERT INTO quote (user_id, subtotal, total, created_at, updated_at, quote_status) VALUES ('$userID', '$subtotal', '$total', '$createdAt', '$updatedAt', '$quoteStatus')";
+            $query = "INSERT INTO quote (user_id, total, quote_status) VALUES ('$userID', '$total', '$quoteStatus')";
             mysqli_query($conn, $query);
             break;
         case "updateQuote":
             $quoteID = $_GET['quote_id'];
             $userID = $_GET['user_id'];
-            $subtotal = $_GET['subtotal'];
             $total = $_GET['total'];
-            $createdAt = $_GET['created_at'];
-            $updatedAt = $_GET['updated_at'];
             $quoteStatus = $_GET['quote_status'];
-            $query = "UPDATE quote SET user_id = '$userID', subtotal = '$subtotal', total = '$total', created_at = '$createdAt', updated_at = '$updatedAt', quote_status = '$quoteStatus' WHERE quote_id = '$quoteID'";
+            $query = "UPDATE quote SET user_id = '$userID', total = '$total', quote_status = '$quoteStatus' WHERE quote_id = '$quoteID'";
             mysqli_query($conn, $query);
             break;
         case "deleteQuote":
