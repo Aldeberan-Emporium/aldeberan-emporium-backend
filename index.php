@@ -125,11 +125,11 @@
         case "updateQuoteRecal":
             $quoteID = $_GET['quote_id'];
             $amount = 0.0;
-            $query = "SELECT * FROM quote_item WHERE quote_id = '$quoteID'";
+            $query = "SELECT SUM(product_quantity*product_price) as total FROM quote_item WHERE quote_id = '$quoteID'";
             $result = mysqli_query($conn, $query);
             if (mysqli_num_rows($result) > 0) {
                 while($row = mysqli_fetch_assoc($result)){
-                    $amount += $row['product_quantity'] * $row['product_price'];
+                    $amount = $amount + $row['total'];
                 }
             }
             $query = "UPDATE quote SET total = '$amount' WHERE quote_id = '$quoteID'";
