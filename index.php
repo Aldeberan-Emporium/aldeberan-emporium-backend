@@ -122,6 +122,19 @@
                 mysqli_query($conn, $query);
             }
             break;
+        case "updateQuoteRecal":
+            $quoteID = $_GET['quote_id'];
+            $amount = 0.0;
+            $query = "SELECT * FROM quote_item WHERE quote_id = '$quoteID'";
+            $result = mysqli_query($conn, $query);
+            if (mysqli_num_rows($result) > 0) {
+                while($row = mysqli_fetch_assoc($result)){
+                    $amount += $row['product_quantity'] * $row['product_price'];
+                }
+            }
+            $query = "UPDATE quote SET total = '$amount' WHERE quote_id = '$quoteID'";
+            mysqli_query($conn, $query);
+            break;
         case "addQuoteItem":
             $quoteID = $_GET['quote_id'];
             $prodName = $_GET['product_name'];
