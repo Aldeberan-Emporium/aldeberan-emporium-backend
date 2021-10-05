@@ -142,8 +142,22 @@
             $prodQuantity = $_GET['product_quantity'];
             $prodPrice = $_GET['product_price'];
             $prodImg = $_GET['product_img'];
-            $query = "INSERT INTO quote_item (quote_id, product_name, product_SKU, product_quantity, product_price, product_img) VALUES ('$quoteID', '$prodName', '$prodSKU', '$prodQuantity', '$prodPrice', '$prodImg')";
-            mysqli_query($conn, $query);
+
+            $quoteItemID = 0;
+            $checkIfItemExist = "SELECT quote_item_id, product_quantity FROM quote_item WHERE quote_id = '$quoteID' AND product_SKU = '$prodSKU'";
+            $isExist = mysqli_query($conn, $query);
+            if (mysqli_num_rows($isExist) > 0) {
+                while($row = mysqli_fetch_assoc($isExist)){
+                    $prodQuantity = $prodQuantity + $row['product_quantity'];
+                    $quoteItemID = $row['quote_item_id'];
+                }
+                $query = "UPDATE quote_item SET product_quantity WHERE quote_item_id = '$quoteItemID'";
+                mysqli_query($conn, $query);
+            }
+            else{
+                $query = "INSERT INTO quote_item (quote_id, product_name, product_SKU, product_quantity, product_price, product_img) VALUES ('$quoteID', '$prodName', '$prodSKU', '$prodQuantity', '$prodPrice', '$prodImg')";
+                mysqli_query($conn, $query);
+            }
             break;
         case "updateQuoteItem":
             $quoteItemID = $_GET['quote_item_id'];            
