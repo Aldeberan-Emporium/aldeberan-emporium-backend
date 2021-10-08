@@ -150,7 +150,7 @@
                     $prodQuantity = $prodQuantity + $row['product_quantity'];
                     $quoteItemID = $row['quote_item_id'];
                 }
-                $query = "UPDATE quote_item SET product_quantity WHERE quote_item_id = '$quoteItemID'";
+                $query = "UPDATE quote_item SET product_quantity = '$prodQuantity' WHERE quote_item_id = '$quoteItemID'";
                 mysqli_query($conn, $query);
             }
             else{
