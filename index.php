@@ -95,7 +95,7 @@
             }
             break;
         case "readQuoteItemByQuote":
-            $userID = $_GET['user_id'];
+            $quoteID = $_GET['quote_id'];
             $query = "SELECT q.*, qi.* FROM quote q
                         INNER JOIN quote_item qi
                         ON qi.quote_id = q.quote_id
