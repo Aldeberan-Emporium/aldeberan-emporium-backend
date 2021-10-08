@@ -145,7 +145,7 @@
 
             $quoteItemID = 0;
             $checkIfItemExist = "SELECT quote_item_id, product_quantity FROM quote_item WHERE quote_id = '$quoteID' AND product_SKU = '$prodSKU'";
-            $isExist = mysqli_query($conn, $query);
+            $isExist = mysqli_query($conn, $checkIfItemExist);
             if (mysqli_num_rows($isExist) > 0) {
                 while($row = mysqli_fetch_assoc($isExist)){
                     $prodQuantity = $prodQuantity + $row['product_quantity'];
