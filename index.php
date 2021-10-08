@@ -96,17 +96,16 @@
             break;
         case "readQuoteItemByQuote":
             $quoteID = $_GET['quote_id'];
-            $query = "SELECT q.*, qi.* FROM quote q
-                        INNER JOIN quote_item qi
-                        ON qi.quote_id = q.quote_id
-                        WHERE quote_id = '$quoteID'
-                        ORDER BY qi.quote_item_id ASC";
+            $query = "SELECT * FROM quote_item_id WHERE quote_id = '$quoteID' ORDER BY quote_item_id ASC";
             $result = mysqli_query($conn, $query);
             if (mysqli_num_rows($result) > 0) {
                 while($row = mysqli_fetch_assoc($result)){
                     $data[] = $row;
                 }
                 echo json_encode($data);
+            }
+            else{
+                echo "error";
             }
             break;
         case "checkIfUserExist":
