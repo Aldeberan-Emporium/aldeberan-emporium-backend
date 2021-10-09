@@ -287,6 +287,12 @@
                 echo json_encode($data);
             }
             break;
+        case "updateOrderStatus":
+            $orderID = $_GET['order_id'];
+            $orderStatus = $_GET['order_status'];       
+            $query = "UPDATE orders SET order_status = '$orderStatus' WHERE order_id = '$orderID'";
+            mysqli_query($conn, $query);
+            break;
         case "addOrderItem":
             $orderID = $_GET['order_id'];
             $prodName = $_GET['product_name'];
