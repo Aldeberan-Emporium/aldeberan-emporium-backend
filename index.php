@@ -234,10 +234,9 @@
             $userID = $_GET['user_id'];
             $orderRef = $_GET['order_reference'];
             $orderDate = $_GET['order_date'];
-            $subtotal = $_GET['order_subtotal'];
             $total = $_GET['order_total'];
             $orderStatus = $_GET['order_status'];       
-            $query = "INSERT INTO orders (user_id, order_reference, order_date, order_subtotal, order_total, order_status) VALUES ('$userID', '$orderRef', '$orderDate', '$subtotal', '$total', '$orderStatus')";
+            $query = "INSERT INTO orders (user_id, order_reference, order_date, order_total, order_status) VALUES ('$userID', '$orderRef', '$orderDate', '$total', '$orderStatus')";
             mysqli_query($conn, $query);
             $getOrderID = "SELECT order_id FROM orders WHERE order_reference = '$orderRef'";
             $result = mysqli_query($conn, $getOrderID);
