@@ -235,7 +235,11 @@
             $orderRef = $_GET['order_reference'];
             $orderDate = $_GET['order_date'];
             $total = $_GET['order_total'];
-            $orderStatus = $_GET['order_status'];       
+            $orderStatus = $_GET['order_status'];   
+            $orderRef = orderIDGenerator();
+			//If order ID existed, rerun generator until the order ID is unique
+			$orderRef = orderIDValidator($orderRef);    
+
             $query = "INSERT INTO orders (user_id, order_reference, order_date, order_total, order_status) VALUES ('$userID', '$orderRef', '$orderDate', '$total', '$orderStatus')";
             mysqli_query($conn, $query);
             $getOrderID = "SELECT order_id FROM orders WHERE order_reference = '$orderRef'";
@@ -330,5 +334,32 @@
             $query = "INSERT INTO order_payment (order_id, payment_type, payment_id) VALUES ('$orderID', '$payType', '$payID')";
             mysqli_query($conn, $query);
             break;
+    }
+
+    //Generate unique order id number
+    function orderIDGenerator(){
+        $length = 15;
+        $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $orderID= '';
+
+        for ($i = 0; $i < $length; $i++) {
+            $orderID .= $characters[mt_rand(0, strlen($characters) - 1)];
+        }
+        return "AE_".$orderID;
+    }
+    
+    //Validate order id number
+    function orderIDValidator($orderID){
+        $checkID = "SELECT * FROM orders WHERE order_reference='$orderID'";
+        $getID = mysqli_query($conn, $checkID);
+        if (mysqli_num_rows($getID) >= 0) {
+            while($row = mysqli_fetch_assoc($getID)){
+                $orderIDOld = $row['order_id'];
+                while ($orderID == $orderIDOld){
+                    $orderID = $this->orderIDGenerator();
+                }
+            }
+        }
+        return $orderID;    
     }
 ?>
