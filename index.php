@@ -237,7 +237,7 @@
             $orderStatus = $_GET['order_status'];   
             $orderRef = orderIDGenerator();
 			//If order ID existed, rerun generator until the order ID is unique
-			$orderRef = orderIDValidator($orderRef);    
+			$orderRef = orderIDValidator($conn, $orderRef);    
 
             $query = "INSERT INTO orders (user_id, order_reference, order_date, order_total, order_status) VALUES ('$userID', '$orderRef', '$orderDate', '$total', '$orderStatus')";
             mysqli_query($conn, $query);
@@ -349,7 +349,7 @@
     }
     
     //Validate order id number
-    function orderIDValidator($orderID){
+    function orderIDValidator($conn, $orderID){
         $checkID = "SELECT * FROM orders WHERE order_reference='$orderID'";
         $getID = mysqli_query($conn, $checkID);
         if (mysqli_num_rows($getID) >= 0) {
