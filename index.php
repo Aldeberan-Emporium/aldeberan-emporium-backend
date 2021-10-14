@@ -232,9 +232,8 @@
             break;
         case "addOrder":
             $userID = $_GET['user_id'];
-            $orderRef = $_GET['order_reference'];
             $orderDate = $_GET['order_date'];
-            $total = $_GET['order_total'];
+            $total = $_GET['total'];
             $orderStatus = $_GET['order_status'];   
             $orderRef = orderIDGenerator();
 			//If order ID existed, rerun generator until the order ID is unique
@@ -242,6 +241,7 @@
 
             $query = "INSERT INTO orders (user_id, order_reference, order_date, order_total, order_status) VALUES ('$userID', '$orderRef', '$orderDate', '$total', '$orderStatus')";
             mysqli_query($conn, $query);
+
             $getOrderID = "SELECT order_id FROM orders WHERE order_reference = '$orderRef'";
             $result = mysqli_query($conn, $getOrderID);
             if (mysqli_num_rows($result) > 0) {
