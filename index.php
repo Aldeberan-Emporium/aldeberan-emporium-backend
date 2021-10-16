@@ -306,13 +306,20 @@
             break;
         case "addOrderItem":
             $orderID = $_GET['order_id'];
-            $prodName = $_GET['product_name'];
-            $prodSKU = $_GET['product_SKU'];
-            $prodQuantity = $_GET['product_quantity'];
-            $prodPrice = $_GET['product_price'];
-            $prodImg = $_GET['product_img'];     
-            $query = "INSERT INTO order_item (order_id, product_name, product_SKU, product_quantity, product_price, product_img) VALUES ('$orderID', '$prodName', '$prodSKU', '$prodQuantity', '$prodPrice', '$prodImg')";
-            mysqli_query($conn, $query);
+            $quoteID = $_GET['quote_id'];
+            $query = "SELECT * FROM quote_item WHERE quote_id = '$quoteID'";
+            $result = mysqli_query($conn, $query);
+            if (mysqli_num_rows($result) > 0) {
+                while($row = mysqli_fetch_assoc($result)){
+                    $prodName = $row['product_name'];
+                    $prodSKU = $row['product_SKU'];
+                    $prodQuantity = $row['product_quantity'];
+                    $prodPrice = $row['product_price'];
+                    $prodImg = $row['product_img'];
+                    $addOrderItem = "INSERT INTO order_item (order_id, product_name, product_SKU, product_quantity, product_price, product_img) VALUES ('$orderID', '$prodName', '$prodSKU', '$prodQuantity', '$prodPrice', '$prodImg')";
+                    mysqli_query($conn, $addOrderItem);
+                }
+            }  
             break;
         case "addOrderAddress":
             $orderID = $_GET['order_id'];
