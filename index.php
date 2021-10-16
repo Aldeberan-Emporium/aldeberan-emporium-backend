@@ -306,7 +306,7 @@
                         ON oa.order_id = o.order_id 
                         INNER JOIN order_payment op
                         ON op.order_id = o.order_id                     
-                        WHERE user_id = 'XHXDzxi0ZMM4I8dEwLYoTNIGkb93'
+                        WHERE user_id = '$userID'
                         GROUP BY o.order_id";
             $result = mysqli_query($conn, $query);
             if (mysqli_num_rows($result) > 0) {
