@@ -93,7 +93,7 @@
             break;
         case "readQuoteItemByQuote":
             $quoteID = $_GET['quote_id'];
-            $query = "SELECT * FROM quote_item WHERE quote_id = '$quoteID'";
+            $query = "SELECT * FROM quote_item WHERE quote_id = '$quoteID' AND quote_status = 0";
             $result = mysqli_query($conn, $query);
             if (mysqli_num_rows($result) > 0) {
                 while($row = mysqli_fetch_assoc($result)){
