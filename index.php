@@ -237,14 +237,18 @@
             $orderStatus = $_GET['order_status'];   
             $ref = orderIDGenerator();
 			//If order ID existed, rerun generator until the order ID is unique
-			$orderRef = orderIDValidator($conn, $ref);    
+			$orderRef = orderIDValidator($conn, $ref);   
+            
+            echo "Begin Insert"."<br>";
 
             $query = "INSERT INTO orders (user_id, order_reference, order_date, order_total, order_status) VALUES ('$userID', '$orderRef', '$orderDate', '$total', '$orderStatus')";
-            mysqli_query($conn, $query);
+            $queryResult = mysqli_query($conn, $query);
 
-            echo "Inserted";
+            echo $queryResult;
 
-            echo "start to select";
+            echo "Inserted"."<br>";
+
+            echo "start to select"."<br>";
 
             echo $orderRef."<br>";
 
@@ -257,7 +261,7 @@
                 echo json_encode($data);
             }
 
-            echo "selected";
+            echo "selected"."<br>";
             break;
         case "readOrderRefAll":
             $query = "SELECT order_reference FROM orders";
