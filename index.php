@@ -246,6 +246,8 @@
 
             echo "start to select";
 
+            echo $orderRef."<br>";
+
             $getOrderID = "SELECT order_id FROM orders WHERE order_reference = '$orderRef'";
             $result = mysqli_query($conn, $getOrderID);
             if (mysqli_num_rows($result) > 0) {
