@@ -70,12 +70,9 @@
             $query = "INSERT INTO quote (user_id, total, quote_status) VALUES ('$userID', '$total', '$quoteStatus')";
             mysqli_query($conn, $query);
             break;
-        case "updateQuote":
+        case "updateQuoteStatus":
             $quoteID = $_GET['quote_id'];
-            $userID = $_GET['user_id'];
-            $total = $_GET['total'];
-            $quoteStatus = $_GET['quote_status'];
-            $query = "UPDATE quote SET user_id = '$userID', total = '$total', quote_status = '$quoteStatus' WHERE quote_id = '$quoteID'";
+            $query = "UPDATE quote SET quote_status = 1 WHERE quote_id = '$quoteID'";
             mysqli_query($conn, $query);
             break;
         case "deleteQuote":
