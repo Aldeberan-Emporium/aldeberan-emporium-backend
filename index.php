@@ -242,6 +242,10 @@
             $query = "INSERT INTO orders (user_id, order_reference, order_date, order_total, order_status) VALUES ('$userID', '$orderRef', '$orderDate', '$total', '$orderStatus')";
             mysqli_query($conn, $query);
 
+            echo "Inserted";
+
+            echo "start to select";
+
             $getOrderID = "SELECT order_id FROM orders WHERE order_reference = '$orderRef'";
             $result = mysqli_query($conn, $getOrderID);
             if (mysqli_num_rows($result) > 0) {
@@ -250,6 +254,8 @@
                 }
                 echo json_encode($data);
             }
+
+            echo "selected";
             break;
         case "readOrderRefAll":
             $query = "SELECT order_reference FROM orders";
