@@ -244,7 +244,11 @@
             $query = "INSERT INTO orders (user_id, order_reference, order_date, order_total, order_status) VALUES ('$userID', '$orderRef', '$orderDate', '$total', '$orderStatus')";
             $queryResult = mysqli_query($conn, $query);
 
-            echo $queryResult;
+            if(mysqli_query($conn, $query)){
+                echo "insert success"."<br>";
+            }else{
+                echo "insert fail"."<br>";
+            }
 
             echo "Inserted"."<br>";
 
