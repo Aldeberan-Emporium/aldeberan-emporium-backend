@@ -93,7 +93,10 @@
             break;
         case "readQuoteItemByQuote":
             $quoteID = $_GET['quote_id'];
-            $query = "SELECT * FROM quote_item WHERE quote_id = '$quoteID' AND quote_status = 0";
+            $query = "SELECT qi.*, q.quote_status FROM quote_item qi 
+                        INNER JOIN quote q
+                        ON qi.quote_id = q.quote_id
+                        WHERE qi.quote_id = '$quoteID' AND q.quote_status = 0";
             $result = mysqli_query($conn, $query);
             if (mysqli_num_rows($result) > 0) {
                 while($row = mysqli_fetch_assoc($result)){
@@ -102,7 +105,7 @@
                 echo json_encode($data);
             }
             else{
-                echo "error";
+                echo "";
             }
             break;
         case "checkIfUserExist":
@@ -238,9 +241,7 @@
 
             $query = "INSERT INTO orders (user_id, order_reference, order_date, order_total, order_status) VALUES ('$userID', '$orderRef', '$orderDate', '$total', '$orderStatus')";
             mysqli_query($conn, $query);
-            break;
-        case "getOrderID":
-            $orderRef = $_GET['order_reference'];
+
             $getOrderID = "SELECT order_id FROM orders WHERE order_reference = '$orderRef'";
             $result = mysqli_query($conn, $getOrderID);
             if (mysqli_num_rows($result) > 0) {
@@ -249,7 +250,7 @@
                 }
                 echo json_encode($data);
             }
-            break;  
+            break;
         case "readOrderRefAll":
             $query = "SELECT order_reference FROM orders";
             $result = mysqli_query($conn, $query);
