@@ -311,11 +311,11 @@
         case "readOrderByUser":
             $userID = $_GET['user_id'];
             $query = "SELECT DISTINCT o.*, oi.*, oa.*, op.* FROM orders o 
-                        INNER JOIN order_item oi
+                        LEFT JOIN order_item oi
                         ON oi.order_id = o.order_id 
-                        INNER JOIN order_address oa
+                        LEFT JOIN order_address oa
                         ON oa.order_id = o.order_id 
-                        INNER JOIN order_payment op
+                        LEFT JOIN order_payment op
                         ON op.order_id = o.order_id                     
                         WHERE user_id = '$userID'
                         GROUP BY o.order_id";
