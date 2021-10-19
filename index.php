@@ -310,15 +310,15 @@
             break;
         case "readOrderByUser":
             $userID = $_GET['user_id'];
-            $query = "SELECT DISTINCT o.*, oi.*, oa.*, op.* FROM orders o 
-                        LEFT JOIN order_item oi
-                        ON oi.order_id = o.order_id 
-                        LEFT JOIN order_address oa
-                        ON oa.order_id = o.order_id 
-                        LEFT JOIN order_payment op
-                        ON op.order_id = o.order_id                     
-                        WHERE user_id = '$userID'
-                        GROUP BY o.order_id";
+            $query = "SELECT * FROM orders o 
+                    LEFT JOIN order_item oi
+                    ON oi.order_item_id = o.order_id 
+                    LEFT JOIN order_address oa
+                    ON oa.order_address_id = o.order_id 
+                    LEFT JOIN order_payment op
+                    ON op.order_payment_id = o.order_id                     
+                    WHERE user_id = '$userID'
+                    GROUP BY o.order_id";
             $result = mysqli_query($conn, $query);
             if (mysqli_num_rows($result) > 0) {
                 while($row = mysqli_fetch_assoc($result)){
