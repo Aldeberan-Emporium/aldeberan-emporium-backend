@@ -330,9 +330,32 @@
                     $result1 = mysqli_query($conn, $query1);
                     if (mysqli_num_rows($result1) > 0) {
                         while($row1 = mysqli_fetch_assoc($result1)){
-                            $row = json_encode($row);
-                            $row = json_decode($row, TRUE);
-                            array_push($row, ["total_items" => $row1['total_items']]);
+                            array_push($data, 
+                                ["order_id" => $row['order_id'],
+                                "user_id" => $row['user_id'],
+                                "order_reference" => $row['order_ref'],
+                                "order_date" => $row['order_date'],
+                                "order_total" => $row['order_total'],
+                                "order_status" => $row['order_status'],
+                                "order_item_id" => $row['order_item_id'],
+                                "product_name" => $row['product_name'],
+                                "product_SKU" => $row['product_SKU'],
+                                "product_quantity" => $row['product_quantity'],
+                                "product_price" => $row['product_price'],
+                                "product_img" => $row['product_img'],
+                                "order_address_id" => $row['order_address_id'],
+                                "address_recipient" => $row['address_recipient'],
+                                "address_contact" => $row['address_contact'],
+                                "address_line1" => $row['address_line1'],
+                                "address_line2" => $row['address_line2'],
+                                "address_code" => $row['address_code'],
+                                "address_city" => $row['address_city'],
+                                "address_state" => $row['address_state'],
+                                "address_country" => $row['address_country'],                                
+                                "order_payment_id" => $row['order_payment_id'],
+                                "payment_type" => $row['payment_type'],
+                                "payment_id" => $row['payment_id'], 
+                                "total_items" => $row1['total_items']]);
                             $data[] = $row;
                         }
                     }
