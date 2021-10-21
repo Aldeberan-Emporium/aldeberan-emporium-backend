@@ -309,6 +309,7 @@
             break;
         case "readOrderByUser":
             $userID = $_GET['user_id'];
+            $data = array();
             $query = "SELECT * FROM orders o 
                     LEFT JOIN order_item oi
                     ON oi.order_item_id = o.order_id 
@@ -321,10 +322,20 @@
             $result = mysqli_query($conn, $query);
             if (mysqli_num_rows($result) > 0) {
                 while($row = mysqli_fetch_assoc($result)){
-                    $data[] = $row;
+                    array_push($data, $row);
+                }
+            }
+            $query1 = "SELECT COUNT(*) AS total_items FROM order_item oi
+                        LEFT JOIN orders o
+                        ON o.order_id = oi.order_id
+                        WHERE o.user_id = '$userID'";
+            $result1 = mysqli_query($conn, $query1);
+            if (mysqli_num_rows($result1) > 0) {
+                while($row1 = mysqli_fetch_assoc($result1)){
+                    array_push($data,$row1);
                 }
                 echo json_encode($data);
-            }
+            }   
             break;
         case "updateOrderStatus":
             $orderID = $_GET['order_id'];
