@@ -330,7 +330,7 @@
                     $result1 = mysqli_query($conn, $query1);
                     if (mysqli_num_rows($result1) > 0) {
                         while($row1 = mysqli_fetch_assoc($result1)){
-                            array_push($data,$row,$row1);
+                            $data[] = $row.$row1;
                         }
                     }
                 }
