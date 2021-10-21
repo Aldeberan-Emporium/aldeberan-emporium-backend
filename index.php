@@ -330,7 +330,9 @@
                     $result1 = mysqli_query($conn, $query1);
                     if (mysqli_num_rows($result1) > 0) {
                         while($row1 = mysqli_fetch_assoc($result1)){
-                            $data[] = $row.$row1;
+                            $row = json_decode($row, TRUE);
+                            $row[] = ['total_items' => $row1['total_items']];
+                            $data[] = json_encode($row);
                         }
                     }
                 }
