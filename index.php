@@ -333,7 +333,7 @@
                             array_push($data, 
                                 ["order_id" => $row['order_id'],
                                 "user_id" => $row['user_id'],
-                                "order_reference" => $row['order_ref'],
+                                "order_reference" => $row['order_reference'],
                                 "order_date" => $row['order_date'],
                                 "order_total" => $row['order_total'],
                                 "order_status" => $row['order_status'],
