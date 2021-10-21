@@ -331,8 +331,8 @@
                     if (mysqli_num_rows($result1) > 0) {
                         while($row1 = mysqli_fetch_assoc($result1)){
                             $row = json_encode($row);
-                            $row[] = ['total_items' => $row1['total_items']];
                             $row = json_decode($row, TRUE);
+                            $row[] = ['total_items' => $row1['total_items']];
                             $data[] = $row;
                         }
                     }
