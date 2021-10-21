@@ -380,6 +380,16 @@
                 echo json_encode($data);
             }
             break;
+        case "readOrderItemTop1":
+            $query = "SELECT * FROM order_item LEFT JOIN orders ON orders.order_id = order_item.order_id GROUP BY order_item.order_id"
+            $result = mysqli_query($conn, $query);
+            if (mysqli_num_rows($result) > 0){
+                while($row = mysqli_fetch_assoc($result)){
+                    $data[] = $row;
+                }
+                echo json_encode($data);
+            }
+            break;
     }
 
     //Generate unique order id number
