@@ -381,7 +381,8 @@
             }
             break;
         case "readOrderItemTop1":
-            $query = "SELECT * FROM order_item LEFT JOIN orders ON orders.order_id = order_item.order_id GROUP BY order_item.order_id";
+            $userID = $_GET['user_id'];
+            $query = "SELECT * FROM order_item LEFT JOIN orders ON orders.order_id = order_item.order_id WHERE orders.user_id = '$userID' GROUP BY order_item.order_id";
             $result = mysqli_query($conn, $query);
             if (mysqli_num_rows($result) > 0){
                 while($row = mysqli_fetch_assoc($result)){
