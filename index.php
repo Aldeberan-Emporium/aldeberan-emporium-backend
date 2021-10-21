@@ -332,7 +332,7 @@
                         while($row1 = mysqli_fetch_assoc($result1)){
                             $row = json_encode($row);
                             $row = json_decode($row, TRUE);
-                            $row[] = ['total_items' => $row1['total_items']];
+                            $row[] = $row1;
                             $data[] = $row;
                         }
                     }
