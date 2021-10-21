@@ -356,7 +356,6 @@
                                 "payment_type" => $row['payment_type'],
                                 "payment_id" => $row['payment_id'], 
                                 "total_items" => $row1['total_items']]);
-                            $data[] = $row;
                         }
                     }
                 }
