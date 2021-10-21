@@ -369,6 +369,17 @@
             $query = "INSERT INTO order_payment (order_id, payment_type, payment_id) VALUES ('$orderID', '$payType', '$payID')";
             mysqli_query($conn, $query);
             break;
+        case "readOrderItem":
+            $userID = $_GET['user_id'];
+            $query = "SELECT * FROM order_item LEFT JOIN orders ON orders.order_id = order_item.order_id WHERE orders.user_id = '$userID'";
+            $result = mysqli_query($query);
+            if (mysqli_num_rows($result) > 0){
+                while($row = mysqli_fetch_assoc($result)){
+                    $data[] = $row;
+                }
+                echo json_encode($data);
+            }
+            break;
     }
 
     //Generate unique order id number
