@@ -70,6 +70,8 @@
             $query = "INSERT INTO quote (user_id, total, quote_status) VALUES ('$userID', '$total', '$quoteStatus')";
             mysqli_query($conn, $query);
 
+            sleep(5);
+            
             $getID = "SELECT quote_id FROM quote WHERE user_id = '$userID' AND quote_status = 0";
             $result = mysqli_query($conn, $getID);
             if (mysqli_num_rows($result) > 0) {
