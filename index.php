@@ -69,6 +69,15 @@
             $quoteStatus = $_GET['quote_status'];
             $query = "INSERT INTO quote (user_id, total, quote_status) VALUES ('$userID', '$total', '$quoteStatus')";
             mysqli_query($conn, $query);
+
+            $getID = "SELECT quote_id FROM quote WHERE user_id = '$userID' AND quote_status = 0";
+            $result = mysqli_query($conn, $getID);
+            if (mysqli_num_rows($result) > 0) {
+                while($row = mysqli_fetch_assoc($result)){
+                    $data[] = $row;
+                }
+                echo json_encode($data);
+            }
             break;
         case "getQuote":
             $userID = $_GET['user_id'];
