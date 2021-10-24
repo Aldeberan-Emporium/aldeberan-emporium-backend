@@ -260,25 +260,9 @@
             $ref = orderIDGenerator();
 			//If order ID existed, rerun generator until the order ID is unique
 			$orderRef = orderIDValidator($conn, $ref);   
-            
-            //echo "Begin Insert"."<br>";
 
             $query = "INSERT INTO orders (user_id, order_reference, order_date, order_total, order_status) VALUES ('$userID', '$orderRef', '$orderDate', '$total', '$orderStatus')";
             mysqli_query($conn, $query);
-
-            /*
-            if(mysqli_query($conn, $query)){
-                echo "insert success"."<br>";
-            }else{
-                echo "insert fail"."<br>";
-            }
-            */
-
-            //echo "Inserted"."<br>";
-
-            //echo "start to select"."<br>";
-
-            //echo $orderRef."<br>";
 
             $getOrderID = "SELECT order_id FROM orders WHERE order_reference = '$orderRef'";
             $result = mysqli_query($conn, $getOrderID);
@@ -288,8 +272,6 @@
                 }
                 echo json_encode($data);
             }
-
-            //echo "selected"."<br>";
             break;
         case "readOrderRefAll":
             $query = "SELECT order_reference FROM orders";
@@ -434,6 +416,70 @@
             if (mysqli_num_rows($result) > 0){
                 while($row = mysqli_fetch_assoc($result)){
                     $data[] = $row;
+                }
+                echo json_encode($data);
+            }
+            break;
+        case "readWishlistByUser":
+            $userID = $_GET['user_id'];
+            $query = "SELECT * FROM wishlist w
+                        LEFT JOIN product p
+                        ON p.product_id = w.product_id
+                        WHERE w.user_id = '$userID'
+                        ORDER BY w.wishlist_id ASC";
+            $result = mysqli_query($conn, $query);
+            if (mysqli_num_rows($result) > 0){
+                while($row = mysqli_fetch_assoc($result)){
+                    $data[] = $row;
+                }
+                echo json_encode($data);
+            }
+            break;
+        case "addToWishlist":
+            $userID = $_GET['user_id'];
+            $prodID = $_GET['product_id'];
+            $query = "INSERT INTO wishlist (user_id, product_id) VALUES ('$userID', '$prodID')";
+            mysqli_query($conn, $query);
+            break;
+        case "deleteFromWishlist":
+            $wishID = $_GET['wishlist_id'];
+            $query = "DELETE FROM wishlist WHERE wishlist_id = '$wishID'";
+            mysqli_query($conn, $query);
+            break;
+        case "readProductAndWishlist":
+            $userID = $_GET['user_id'];
+            $data = array();
+            $query = "SELECT * FROM product ORDER BY product_id ASC";
+            $result = mysqli_query($conn, $query);
+            if (mysqli_num_rows($result) > 0) {
+                while($row = mysqli_fetch_assoc($result)){
+                    $prodID = $row['product_id'];
+                    $query1 = "SELECT * FROM wishlist WHERE product_id = '$prodID'";
+                    $result1 = mysqli_query($conn, $query1);
+                    if (mysqli_num_rows($result1) > 0) {
+                        while($row1 = mysqli_fetch_assoc($result1)){
+                            array_push($data, 
+                                ["product_id" => $row['product_id'],
+                                "product_name" => $row['product_name'],
+                                "product_SKU" => $row['product_SKU'],
+                                "product_availability" => $row['product_availability'],
+                                "product_stock" => $row['product_stock'],
+                                "product_price" => $row['product_price'],
+                                "product_img" => $row['product_img'],
+                                "wishlist_id" => $row1['wishlist_id']]);
+                        }
+                    }
+                    else{
+                        array_push($data, 
+                            ["product_id" => $row['product_id'],
+                            "product_name" => $row['product_name'],
+                            "product_SKU" => $row['product_SKU'],
+                            "product_availability" => $row['product_availability'],
+                            "product_stock" => $row['product_stock'],
+                            "product_price" => $row['product_price'],
+                            "product_img" => $row['product_img'],
+                            "wishlist_id" => -1]);
+                    }
                 }
                 echo json_encode($data);
             }
