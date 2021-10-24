@@ -312,11 +312,11 @@
             $data = array();
             $query = "SELECT * FROM orders o 
                     LEFT JOIN order_item oi
-                    ON oi.order_item_id = o.order_id 
+                    ON oi.order_id = o.order_id 
                     LEFT JOIN order_address oa
-                    ON oa.order_address_id = o.order_id 
+                    ON oa.order_id = o.order_id 
                     LEFT JOIN order_payment op
-                    ON op.order_payment_id = o.order_id                     
+                    ON op.order_id = o.order_id                     
                     WHERE user_id = '$userID'
                     GROUP BY o.order_id";
             $result = mysqli_query($conn, $query);
@@ -422,7 +422,7 @@
             $result = mysqli_query($conn, $query);
             if (mysqli_num_rows($result) > 0){
                 while($row = mysqli_fetch_assoc($result)){
-                    $data[] = $row;
+                    $data[] = $row;w
                 }
                 echo json_encode($data);
             }
