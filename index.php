@@ -426,7 +426,7 @@
                         LEFT JOIN product p
                         ON p.product_id = w.product_id
                         WHERE w.user_id = '$userID'
-                        ORDER BY w.wishlist_id ASC";
+                        GROUP BY p.product_id";
             $result = mysqli_query($conn, $query);
             if (mysqli_num_rows($result) > 0){
                 while($row = mysqli_fetch_assoc($result)){
