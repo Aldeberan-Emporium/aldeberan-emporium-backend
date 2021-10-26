@@ -375,10 +375,22 @@
                     $prodQuantity = $row['product_quantity'];
                     $prodPrice = $row['product_price'];
                     $prodImg = $row['product_img'];
+
                     $addOrderItem = "INSERT INTO order_item (order_id, product_name, product_SKU, product_quantity, product_price, product_img) VALUES ('$orderID', '$prodName', '$prodSKU', '$prodQuantity', '$prodPrice', '$prodImg')";
                     mysqli_query($conn, $addOrderItem);
+                    
+                    $getProductStock = "SELECT product_id, product_stock FROM product WHERE product_SKU = '$prodSKU'";
+                    $result = mysqli_query($conn, $getProductStock);
+                    if (mysqli_num_rows($result) > 0){
+                        while ($row = mysqli_fetch_assoc($result)){
+                            $prodID = $row['product_id'];
+                            $newStock = $row['product_stock'] - $prodQuantity;
+                            $updateProductStock = "UPDATE product SET product_stock='$newStock' WHERE product_id = '$prodID'";
+                            mysqli_query($conn, $updateProductStock);
+                        }
+                    }
                 }
-            }  
+            }
             break;
         case "addOrderAddress":
             $orderID = $_GET['order_id'];
