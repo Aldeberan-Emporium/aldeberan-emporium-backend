@@ -380,11 +380,11 @@
                     mysqli_query($conn, $addOrderItem);
                     
                     $getProductStock = "SELECT product_id, product_stock FROM product WHERE product_SKU = '$prodSKU'";
-                    $result = mysqli_query($conn, $getProductStock);
-                    if (mysqli_num_rows($result) > 0){
-                        while ($row = mysqli_fetch_assoc($result)){
-                            $prodID = $row['product_id'];
-                            $newStock = $row['product_stock'] - $prodQuantity;
+                    $result1 = mysqli_query($conn, $getProductStock);
+                    if (mysqli_num_rows($result1) > 0){
+                        while ($row1 = mysqli_fetch_assoc($result1)){
+                            $prodID = $row1['product_id'];
+                            $newStock = $row1['product_stock'] - $prodQuantity;
                             $updateProductStock = "UPDATE product SET product_stock='$newStock' WHERE product_id = '$prodID'";
                             mysqli_query($conn, $updateProductStock);
                         }
