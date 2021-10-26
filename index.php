@@ -137,10 +137,12 @@
             $result = mysqli_query($conn, $query);
             if (mysqli_num_rows($result) > 0) {
                 $isUserExist = true;
+                echo json_encode(['status' => true]);
             }
             if (!$isUserExist){
                 $query = "INSERT INTO quote (user_id, total, quote_status) VALUES ('$userID', '0.00', '0')";
                 mysqli_query($conn, $query);
+                echo json_encode(['status' => false]);
             }
             break;
         case "updateQuoteRecal":
