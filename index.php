@@ -43,7 +43,13 @@
             mysqli_query($conn, $query);
             break;
         case "readProductAll":
-            $query = "SELECT * FROM product ORDER BY product_id ASC";
+            $query = "SELECT p.product_id, p.product_name, p.product_SKU, p.product_availability, p.product_stock, p.product_price, p.product_img,
+                        IFNULL(SUM(oi.product_quantity), 0) AS product_sold
+                        FROM product p
+                        LEFT JOIN order_item oi
+                        ON oi.product_SKU = p.product_SKU
+                        GROUP BY oi.product_SKU
+                        ORDER BY product_sold DESC";
             $result = mysqli_query($conn, $query);
             if (mysqli_num_rows($result) > 0) {
                 while($row = mysqli_fetch_assoc($result)){
@@ -463,7 +469,13 @@
         case "readProductAndWishlist":
             $userID = $_GET['user_id'];
             $data = array();
-            $query = "SELECT * FROM product ORDER BY product_id ASC";
+            $query = "SELECT p.product_id, p.product_name, p.product_SKU, p.product_availability, p.product_stock, p.product_price, p.product_img,
+                        IFNULL(SUM(oi.product_quantity), 0) AS product_sold
+                        FROM product p
+                        LEFT JOIN order_item oi
+                        ON oi.product_SKU = p.product_SKU
+                        GROUP BY oi.product_SKU
+                        ORDER BY product_sold DESC";
             $result = mysqli_query($conn, $query);
             if (mysqli_num_rows($result) > 0) {
                 while($row = mysqli_fetch_assoc($result)){
@@ -480,6 +492,7 @@
                                 "product_stock" => $row['product_stock'],
                                 "product_price" => $row['product_price'],
                                 "product_img" => $row['product_img'],
+                                "product_sold" => $row['product_sold'],
                                 "wishlist_id" => $row1['wishlist_id']]);
                         }
                     }
@@ -492,6 +505,7 @@
                             "product_stock" => $row['product_stock'],
                             "product_price" => $row['product_price'],
                             "product_img" => $row['product_img'],
+                            "product_sold" => $row['product_sold'],
                             "wishlist_id" => -1]);
                     }
                 }
@@ -502,7 +516,13 @@
             $userID = $_GET['user_id'];
             if ($userID != "nan"){
                 $data = array();
-                $query = "SELECT * FROM product ORDER BY product_id ASC LIMIT 4";
+                $query = "SELECT p.product_id, p.product_name, p.product_SKU, p.product_availability, p.product_stock, p.product_price, p.product_img,
+                            IFNULL(SUM(oi.product_quantity), 0) AS product_sold
+                            FROM product p
+                            LEFT JOIN order_item oi
+                            ON oi.product_SKU = p.product_SKU
+                            GROUP BY oi.product_SKU
+                            ORDER BY product_sold DESC LIMIT 4";
                 $result = mysqli_query($conn, $query);
                 if (mysqli_num_rows($result) > 0) {
                     while($row = mysqli_fetch_assoc($result)){
@@ -519,6 +539,7 @@
                                     "product_stock" => $row['product_stock'],
                                     "product_price" => $row['product_price'],
                                     "product_img" => $row['product_img'],
+                                    "product_sold" => $row['product_sold'],
                                     "wishlist_id" => $row1['wishlist_id']]);
                             }
                         }
@@ -531,6 +552,7 @@
                                 "product_stock" => $row['product_stock'],
                                 "product_price" => $row['product_price'],
                                 "product_img" => $row['product_img'],
+                                "product_sold" => $row['product_sold'],
                                 "wishlist_id" => -1]);
                         }
                     }
@@ -538,7 +560,82 @@
                 }
             }
             else{
-                    $query = "SELECT * FROM product ORDER BY product_id ASC LIMIT 4";
+                $query = "SELECT p.product_id, p.product_name, p.product_SKU, p.product_availability, p.product_stock, p.product_price, p.product_img,
+                            IFNULL(SUM(oi.product_quantity), 0) AS product_sold
+                            FROM product p
+                            LEFT JOIN order_item oi
+                            ON oi.product_SKU = p.product_SKU
+                            GROUP BY oi.product_SKU
+                            ORDER BY product_sold DESC LIMIT 4";
+                $result = mysqli_query($conn, $query);
+                if (mysqli_num_rows($result) > 0) {
+                    while($row = mysqli_fetch_assoc($result)){
+                        $prodID = $row['product_id'];
+                        $query1 = "SELECT * FROM wishlist WHERE product_id = '$prodID'";
+                        $result1 = mysqli_query($conn, $query1);
+                        if (mysqli_num_rows($result1) > 0) {
+                            $data[] = $row;
+                        }
+                    }
+                    echo json_encode($data);
+                }
+            }
+            break;
+        case "readNewArrival":
+            $userID = $_GET['user_id'];
+            if ($userID != "nan"){
+                $data = array();
+                $query = "SELECT p.product_id, p.product_name, p.product_SKU, p.product_availability, p.product_stock, p.product_price, p.product_img,
+                            IFNULL(SUM(oi.product_quantity), 0) AS product_sold
+                            FROM product p
+                            LEFT JOIN order_item oi
+                            ON oi.product_SKU = p.product_SKU
+                            GROUP BY oi.product_SKU
+                            ORDER BY p.product_id DESC LIMIT 4";
+                $result = mysqli_query($conn, $query);
+                if (mysqli_num_rows($result) > 0) {
+                    while($row = mysqli_fetch_assoc($result)){
+                        $prodID = $row['product_id'];
+                        $query1 = "SELECT * FROM wishlist WHERE product_id = '$prodID'";
+                        $result1 = mysqli_query($conn, $query1);
+                        if (mysqli_num_rows($result1) > 0) {
+                            while($row1 = mysqli_fetch_assoc($result1)){
+                                array_push($data, 
+                                    ["product_id" => $row['product_id'],
+                                    "product_name" => $row['product_name'],
+                                    "product_SKU" => $row['product_SKU'],
+                                    "product_availability" => $row['product_availability'],
+                                    "product_stock" => $row['product_stock'],
+                                    "product_price" => $row['product_price'],
+                                    "product_img" => $row['product_img'],
+                                    "product_sold" => $row['product_sold'],
+                                    "wishlist_id" => $row1['wishlist_id']]);
+                            }
+                        }
+                        else{
+                            array_push($data, 
+                                ["product_id" => $row['product_id'],
+                                "product_name" => $row['product_name'],
+                                "product_SKU" => $row['product_SKU'],
+                                "product_availability" => $row['product_availability'],
+                                "product_stock" => $row['product_stock'],
+                                "product_price" => $row['product_price'],
+                                "product_img" => $row['product_img'],
+                                "product_sold" => $row['product_sold'],
+                                "wishlist_id" => -1]);
+                        }
+                    }
+                echo json_encode($data);
+                }
+            }
+            else{
+                    $query = "SELECT p.product_id, p.product_name, p.product_SKU, p.product_availability, p.product_stock, p.product_price, p.product_img,
+                                IFNULL(SUM(oi.product_quantity), 0) AS product_sold
+                                FROM product p
+                                LEFT JOIN order_item oi
+                                ON oi.product_SKU = p.product_SKU
+                                GROUP BY oi.product_SKU
+                                ORDER BY p.product_id DESC LIMIT 4";
                     $result = mysqli_query($conn, $query);
                     if (mysqli_num_rows($result) > 0) {
                         while($row = mysqli_fetch_assoc($result)){
@@ -553,10 +650,15 @@
                     }
             }
             break;
-        case "readNewArrival":
             $userID = $_GET['user_id'];
             $data = array();
-            $query = "SELECT * FROM product ORDER BY product_id DESC LIMIT 4";
+            $query = "SELECT p.product_id, p.product_name, p.product_SKU, p.product_availability, p.product_stock, p.product_price, p.product_img,
+                        IFNULL(SUM(oi.product_quantity), 0) AS product_sold
+                        FROM product p
+                        LEFT JOIN order_item oi
+                        ON oi.product_SKU = p.product_SKU
+                        GROUP BY oi.product_SKU
+                        ORDER BY p.product_id DESC LIMIT 4";
             $result = mysqli_query($conn, $query);
             if (mysqli_num_rows($result) > 0) {
                 while($row = mysqli_fetch_assoc($result)){
@@ -573,6 +675,7 @@
                                 "product_stock" => $row['product_stock'],
                                 "product_price" => $row['product_price'],
                                 "product_img" => $row['product_img'],
+                                "product_sold" => $row['product_sold'],
                                 "wishlist_id" => $row1['wishlist_id']]);
                         }
                     }
@@ -585,6 +688,7 @@
                             "product_stock" => $row['product_stock'],
                             "product_price" => $row['product_price'],
                             "product_img" => $row['product_img'],
+                            "product_sold" => $row['product_sold'],
                             "wishlist_id" => -1]);
                     }
                 }
