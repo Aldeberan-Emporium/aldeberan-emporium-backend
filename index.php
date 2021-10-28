@@ -498,6 +498,82 @@
                 echo json_encode($data);
             }
             break;
+        case "readBestSellers":
+            $userID = $_GET['user_id'];
+            $data = array();
+            $query = "SELECT * FROM product ORDER BY product_id ASC LIMIT 4";
+            $result = mysqli_query($conn, $query);
+            if (mysqli_num_rows($result) > 0) {
+                while($row = mysqli_fetch_assoc($result)){
+                    $prodID = $row['product_id'];
+                    $query1 = "SELECT * FROM wishlist WHERE product_id = '$prodID'";
+                    $result1 = mysqli_query($conn, $query1);
+                    if (mysqli_num_rows($result1) > 0) {
+                        while($row1 = mysqli_fetch_assoc($result1)){
+                            array_push($data, 
+                                ["product_id" => $row['product_id'],
+                                "product_name" => $row['product_name'],
+                                "product_SKU" => $row['product_SKU'],
+                                "product_availability" => $row['product_availability'],
+                                "product_stock" => $row['product_stock'],
+                                "product_price" => $row['product_price'],
+                                "product_img" => $row['product_img'],
+                                "wishlist_id" => $row1['wishlist_id']]);
+                        }
+                    }
+                    else{
+                        array_push($data, 
+                            ["product_id" => $row['product_id'],
+                            "product_name" => $row['product_name'],
+                            "product_SKU" => $row['product_SKU'],
+                            "product_availability" => $row['product_availability'],
+                            "product_stock" => $row['product_stock'],
+                            "product_price" => $row['product_price'],
+                            "product_img" => $row['product_img'],
+                            "wishlist_id" => -1]);
+                    }
+                }
+                echo json_encode($data);
+            }
+            break;
+        case "readNewArrival":
+            $userID = $_GET['user_id'];
+            $data = array();
+            $query = "SELECT * FROM product ORDER BY product_id DESC LIMIT 4";
+            $result = mysqli_query($conn, $query);
+            if (mysqli_num_rows($result) > 0) {
+                while($row = mysqli_fetch_assoc($result)){
+                    $prodID = $row['product_id'];
+                    $query1 = "SELECT * FROM wishlist WHERE product_id = '$prodID'";
+                    $result1 = mysqli_query($conn, $query1);
+                    if (mysqli_num_rows($result1) > 0) {
+                        while($row1 = mysqli_fetch_assoc($result1)){
+                            array_push($data, 
+                                ["product_id" => $row['product_id'],
+                                "product_name" => $row['product_name'],
+                                "product_SKU" => $row['product_SKU'],
+                                "product_availability" => $row['product_availability'],
+                                "product_stock" => $row['product_stock'],
+                                "product_price" => $row['product_price'],
+                                "product_img" => $row['product_img'],
+                                "wishlist_id" => $row1['wishlist_id']]);
+                        }
+                    }
+                    else{
+                        array_push($data, 
+                            ["product_id" => $row['product_id'],
+                            "product_name" => $row['product_name'],
+                            "product_SKU" => $row['product_SKU'],
+                            "product_availability" => $row['product_availability'],
+                            "product_stock" => $row['product_stock'],
+                            "product_price" => $row['product_price'],
+                            "product_img" => $row['product_img'],
+                            "wishlist_id" => -1]);
+                    }
+                }
+                echo json_encode($data);
+            }
+            break;
     }
 
     //Generate unique order id number
