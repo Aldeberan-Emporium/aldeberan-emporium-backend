@@ -319,6 +319,28 @@
                     LEFT JOIN order_payment op
                     ON op.order_id = o.order_id                     
                     WHERE user_id = '$userID'
+                    AND (o.order_id IS NOT NULL
+                    OR o.order_reference IS NOT NULL
+                    OR o.order_date IS NOT NULL
+                    OR o.order_total IS NOT NULL
+                    OR oi.order_item_id IS NOT NULL
+                    OR oi.product_name IS NOT NULL
+                    OR oi.product_SKU IS NOT NULL
+                    OR oi.product_quantity IS NOT NULL
+                    OR oi.product_price IS NOT NULL
+                    OR oi.product_img IS NOT NULL
+                    OR oa.order_address_id IS NOT NULL
+                    OR oa.address_recipient IS NOT NULL
+                    OR oa.address_contact IS NOT NULL
+                    OR oa.address_line1 IS NOT NULL
+                    OR oa.address_line2 IS NOT NULL
+                    OR oa.address_code IS NOT NULL
+                    OR oa.address_city IS NOT NULL
+                    OR oa.address_country IS NOT NULL
+                    OR op.order_payment_id IS NOT NULL
+                    OR op.payment_type IS NOT NULL
+                    OR op.payment_id IS NOT NULL)
+                    ORDER BY o.order_id DESC
                     GROUP BY o.order_id";
             $result = mysqli_query($conn, $query);
             if (mysqli_num_rows($result) > 0) {
