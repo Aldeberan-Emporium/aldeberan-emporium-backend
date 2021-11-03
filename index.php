@@ -547,7 +547,7 @@
         case "readBestSellers":
             $userID = $_GET['user_id'];
             $data = array();
-            if ($userID != "IDK"){
+            if ($userID != "guest"){
                 $query = "SELECT p.product_id, p.product_name, p.product_SKU, p.product_availability, p.product_stock, p.product_price, p.product_img,
                             IFNULL(SUM(oi.product_quantity), 0) AS product_sold
                             FROM product p
@@ -620,7 +620,7 @@
         case "readNewArrival":
             $userID = $_GET['user_id'];
             $data = array();
-            if ($userID != "IDK"){
+            if ($userID != "guest"){
                 $query = "SELECT p.product_id, p.product_name, p.product_SKU, p.product_availability, p.product_stock, p.product_price, p.product_img,
                             IFNULL(SUM(oi.product_quantity), 0) AS product_sold
                             FROM product p
