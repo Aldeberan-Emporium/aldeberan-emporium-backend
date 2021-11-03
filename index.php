@@ -319,7 +319,7 @@
                     LEFT JOIN order_payment op
                     ON op.order_id = o.order_id                     
                     WHERE user_id = '$userID'
-                    AND o.order_id IS NOT NULL
+                    AND (o.order_id IS NOT NULL
                     OR o.order_reference IS NOT NULL
                     OR o.order_date IS NOT NULL
                     OR o.order_total IS NOT NULL
@@ -339,7 +339,7 @@
                     OR oa.address_country IS NOT NULL
                     OR op.order_payment_id IS NOT NULL
                     OR op.payment_type IS NOT NULL
-                    OR op.payment_id IS NOT NULL
+                    OR op.payment_id IS NOT NULL)
                     GROUP BY o.order_id
                     ORDER BY o.order_id DESC";
             $result = mysqli_query($conn, $query);
