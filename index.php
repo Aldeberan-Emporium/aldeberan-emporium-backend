@@ -340,8 +340,8 @@
                     OR op.order_payment_id IS NOT NULL
                     OR op.payment_type IS NOT NULL
                     OR op.payment_id IS NOT NULL
-                    ORDER BY o.order_id DESC
-                    GROUP BY o.order_id";
+                    GROUP BY o.order_id
+                    ORDER BY o.order_id DESC";
             $result = mysqli_query($conn, $query);
             if (mysqli_num_rows($result) > 0) {
                 while($row = mysqli_fetch_assoc($result)){
