@@ -605,7 +605,16 @@
                         $query1 = "SELECT * FROM wishlist WHERE product_id = '$prodID'";
                         $result1 = mysqli_query($conn, $query1);
                         if (mysqli_num_rows($result1) > 0) {
-                            $data[] = $row;
+                            array_push($data, 
+                            ["product_id" => $row['product_id'],
+                            "product_name" => $row['product_name'],
+                            "product_SKU" => $row['product_SKU'],
+                            "product_availability" => $row['product_availability'],
+                            "product_stock" => $row['product_stock'],
+                            "product_price" => $row['product_price'],
+                            "product_img" => $row['product_img'],
+                            "product_sold" => $row['product_sold'],
+                            "wishlist_id" => -1]);
                         }
                     }
                     echo json_encode($data);
